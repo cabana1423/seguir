@@ -67,6 +67,22 @@ router.post('/divisas', function(req, res, next) {
   });
 
 });
+
+router.post('/interes', function(req, res, next) {
+  var entrada = req.body;
+  if (entrada.monto ==null && entrada.int==null && entrada.tiempo==null) {
+      res.status(500).json({"msn":"datos incorrectos, ejemplo: monto = 1000, interes anual % = 4, el  tiempo en meses = 18"
+  });
+  return;
+  } 
+  var int_total=(Number(entrada.int)/12)*Number(entrada.tiempo)
+  var monto_interes=(int_total/100)*Number(entrada.monto)
+  var pago_total=monto_interes+Number(entrada.monto)
+  res.status(500).json({
+      "total monto a pagar":pago_total+" en "+entrada.tiempo+" meses"
+  });
+
+});
 module.exports = router;
 
 
