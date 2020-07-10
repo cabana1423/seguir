@@ -18,7 +18,7 @@ var USERSCHEMA = new mongoose.Schema({
         type: Number,
         required :[true, "la edad es necesaria"]
     },
-    password:{
+    password:{ 
         type: String,
         required:[true,"password necesario"],
         min: [6, "el password como minimo 6 caracteres"],

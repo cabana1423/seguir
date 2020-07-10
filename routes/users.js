@@ -64,10 +64,42 @@ router.post("/user",(req,res)=>{
         return;
     })    
 });
-router.put("/user",(req,res)=>{
+router.put("/user",async(req,res)=>{
+    var params=req.query;
+    var bodydata =req.body;
+    if (params.id==null){
+        res.status(300).json({msn: "el paramero I es necesario"});
+        return;
+    }
+    var allowkeylist = ["nick", "email", "age"];
+    var keys = Object.keys(bodydata);
+    var updateobjectdata={};
+    for(var i=0;i<keys.length;i++){
+        if(allowkeylist.indexOf(keys[i]) > -1){
+            updateobjectdata[keys[i]]=bodydata[keys[i]];
+        }
+    }
 
+    USER.update({_id: params.id},{$set: updateobjectdata},(err, docs)=>{
+        if(err){
+            res.status(500).json({msn: "existen problemas en la base de datos"});
+            return;
+        }
+        res.status(200).json(docs);
+    });
 });
 router.delete("/user",(req,res)=>{
-
+    var params=req.query;
+    if (params.id==null){
+        res.status(300).json({msn: "el paramero I es necesario"});
+        return;
+    }
+    USER.remove({_id: params.id},(err, docs)=>{
+        if(err){
+            res.status(500).json({msn: "existen problemas en la base de datos"});
+            return;
+        }
+        res.status(200).json(docs);
+    });
 });
 module.exports=router;
